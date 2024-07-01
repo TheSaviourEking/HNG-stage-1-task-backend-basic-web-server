@@ -24,16 +24,12 @@ app.get('/api/hello/', async (req, res) => {
         req.socket.remoteAddress ||
         null;
 
-    const { ipInfoData: { ip, city }, weatherData: { temp_c } } = await getCombinedData(reqIp)
-    // const location = lookup(req.ip)
-    // const location
+    // const { ipInfoData: { ip, city }, weatherData: { temp_c } } = await getCombinedData(reqIp);
+    const { ipInfoData: { ip, city }, current: { temp_c } } = await getCombinedData(reqIp);
 
     res.json(
         {
             'client_ip': ip,
-            // 'second ip': ip,
-            // "parsed ip": parseIp(req),
-            // 'getIp': getClientIp(req),
             'location': city,
             'greeting': `Hello ${visitor_name ? stripQuotes(visitor_name) : 'guest'}! The temperature is ${temp_c} degrees Celsius in ${city}`
         }

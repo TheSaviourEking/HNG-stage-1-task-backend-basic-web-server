@@ -19,12 +19,13 @@ const getCombinedData = async (ip) => {
         ]);
 
         const ipInfoData = await ipInfoResponse.json();
-        const weatherData = await weatherResponse.json();
+        // const weatherData = await weatherResponse.json();
+        const { current } = await weatherResponse.json();
 
-        console.log(ipInfoData);
-        console.log(weatherData);
+        // console.log('ip', ipInfoData);
+        // console.log('weather', weatherData);
 
-        return { ipInfoData, weatherData };
+        return { ipInfoData, current };
     } catch (error) {
         console.error('Error:', error);
     }
