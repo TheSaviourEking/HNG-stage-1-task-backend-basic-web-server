@@ -1,5 +1,12 @@
 require('dotenv').config();
 
+const stripQuotes = (str) => {
+    if (str.startsWith('"') && str.endsWith('"')) {
+        return str.slice(1, -1);
+    }
+    return str;
+}
+
 const getCombinedData = async (ip) => {
     const apiKey = process.env.apiKey || null;
     const ipInfoUrl = `https://api.weatherapi.com/v1/ip.json?key=186c65a9633c4c77800234103243006&q=${ip}`;
@@ -23,4 +30,4 @@ const getCombinedData = async (ip) => {
     }
 };
 
-module.exports = getCombinedData;
+module.exports = { stripQuotes, getCombinedData };

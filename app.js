@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const geoip = require('fast-geoip');
 const app = express();
-const getCombinedData = require('./utils');
+const { stripQuotes, getCombinedData } = require('./utils');
 // const { lookup } = require('geoip-lite');
 
 app.set('trust proxy', true);
@@ -35,7 +35,7 @@ app.get('/api/hello/', async (req, res) => {
             // "parsed ip": parseIp(req),
             // 'getIp': getClientIp(req),
             'location': city,
-            'greeting': `Hello ${visitor_name ? visitor_name : 'guest'}! The temperature is ${temperature} degrees Celsius in ${city}`
+            'greeting': `Hello ${visitor_name ? stripQuotes(visitor_name) : 'guest'}! The temperature is ${temperature} degrees Celsius in ${city}`
         }
     )
 })
