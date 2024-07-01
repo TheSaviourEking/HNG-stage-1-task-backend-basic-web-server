@@ -31,7 +31,7 @@ app.get('/api/hello/', (req, res) => {
             req.client.remoteAddress;
     };
 
-    const location = lookup(ip)?.city
+    const location = lookup(req.ip)?.city
 
     res.json(
         {
