@@ -9,8 +9,8 @@ const stripQuotes = (str) => {
 
 const getCombinedData = async (ip) => {
     const apiKey = process.env.apiKey || null;
-    const ipInfoUrl = `https://api.weatherapi.com/v1/ip.json?key=186c65a9633c4c77800234103243006&q=${ip}`;
-    const weatherUrl = `https://api.weatherapi.com/v1/current.json?key=186c65a9633c4c77800234103243006&q=${ip}`;
+    const ipInfoUrl = `https://api.weatherapi.com/v1/ip.json?key=${apiKey}&q=${ip}`;
+    const weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${ip}`;
 
     try {
         const [ipInfoResponse, weatherResponse] = await Promise.all([
@@ -19,11 +19,7 @@ const getCombinedData = async (ip) => {
         ]);
 
         const ipInfoData = await ipInfoResponse.json();
-        // const weatherData = await weatherResponse.json();
         const { current } = await weatherResponse.json();
-
-        // console.log('ip', ipInfoData);
-        // console.log('weather', weatherData);
 
         return { ipInfoData, current };
     } catch (error) {
