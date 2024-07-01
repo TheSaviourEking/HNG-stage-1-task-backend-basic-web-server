@@ -1,8 +1,10 @@
 require('dotenv').config();
 
 const express = require('express');
+const geoip = require('fast-geoip');
 const app = express();
-const { lookup } = require('geoip-lite');
+const getCombinedData = require('./utils');
+// const { lookup } = require('geoip-lite');
 
 app.set('trust proxy', true);
 
@@ -16,31 +18,24 @@ app.get('/', (req, res) => {
 //     "location": "New York" // The city of the requester
 //     "greeting": "Hello, Mark!, the temperature is 11 degrees Celcius in New York"
 //   }
-app.get('/api/hello/', (req, res) => {
+app.get('/api/hello/', async (req, res) => {
     const { visitor_name } = req.query;
-    var ip = req.headers['x-forwarded-for'] ||
+    var reqIp = req.headers['x-forwarded-for'] ||
         req.socket.remoteAddress ||
         null;
-    const parseIp = (req) =>
-        req.headers['x-forwarded-for']?.split(',').shift()
-        || req.socket?.remoteAddress
-    var getClientIp = function (req) {
-        return (req.headers["X-Forwarded-For"] ||
-            req.headers["x-forwarded-for"] ||
-            '').split(',')[0] ||
-            req.client.remoteAddress;
-    };
 
-    const location = lookup(req.ip)?.city
+    const { ipInfoData: { ip, city }, weatherData: { temp_c: temperature } } = await getCombinedData(reqIp)
+    // const location = lookup(req.ip)
+    // const location
 
     res.json(
         {
-            'client_ip': req.ip,
-            'second ip': ip,
-            "parsed ip": parseIp(req),
-            'getIp': getClientIp(req),
-            'location': location,
-            'greeting': `Hello ${visitor_name}! The temperature is 11 degrees Celsius in ${location}`
+            'client_ip': ip,
+            // 'second ip': ip,
+            // "parsed ip": parseIp(req),
+            // 'getIp': getClientIp(req),
+            'location': city,
+            'greeting': `Hello ${visitor_name ? visitor_name : 'guest'}! The temperature is ${temperature} degrees Celsius in ${city}`
         }
     )
 })
