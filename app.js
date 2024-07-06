@@ -22,7 +22,6 @@ app.get('/api/hello/', async (req, res) => {
         req.socket.remoteAddress ||
         null;
     const ip = reqIp.split(',').splice(0, 1)[0];
-    // const { ipInfoData: { ip, city }, current: { temp_c } } = await getCombinedData(reqIp);
     const { name, temp_c } = await getCombinedData(reqIp);
 
     res.json(
