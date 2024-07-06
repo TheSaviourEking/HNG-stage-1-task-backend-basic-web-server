@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 //   }
 app.get('/api/hello/', async (req, res) => {
     const { visitor_name } = req.query;
-    var reqIp = req.headers['x-forwarded-for'] ||
+    const reqIp = req.headers['x-forwarded-for'] ||
         req.socket.remoteAddress ||
         null;
 
@@ -27,7 +27,7 @@ app.get('/api/hello/', async (req, res) => {
 
     res.json(
         {
-            'client_ip': ip,
+            'client_ip': reqIp,
             'location': name,
             'greeting': `Hello ${visitor_name ? stripQuotes(visitor_name) : 'guest'}! The temperature is ${temp_c ? temp_c : 'unknown'} degrees Celsius in ${name}`
         }
